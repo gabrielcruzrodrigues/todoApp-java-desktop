@@ -10,7 +10,8 @@ public class Projeto {
     private Date createdAt;
     private Date updateAt;
     
-    public Projeto(String name, String description, Date createdAt, Date updateAt) {
+    public Projeto(int id, String name, String description, Date createdAt, Date updateAt) {
+        this.id = id;
         this.name = name;
         this.description = description;
         this.createdAt = createdAt;
