@@ -1,21 +1,25 @@
-
+    
 package model;
 
 import java.util.Date;
 
-public class Projeto {
+public class Project {
     private int id;
     private String name;
     private String description;
     private Date createdAt;
-    private Date updateAt;
+    private Date updatedAt;
     
-    public Projeto(int id, String name, String description, Date createdAt, Date updateAt) {
+    public Project(int id, String name, String description, Date createdAt, Date updatedAt) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.createdAt = createdAt;
-        this.updateAt = updateAt;
+        this.updatedAt = updatedAt;
+    }
+    
+    public Project() {
+        this.createdAt = new Date();
     }
 
     public int getId() {
@@ -50,16 +54,16 @@ public class Projeto {
         this.createdAt = createAt;
     }
 
-    public Date getUpdateAt() {
-        return updateAt;
+    public Date getUpdatedAt() {
+        return updatedAt;
     }
 
-    public void setUpdateAt(Date updateAt) {
-        this.updateAt = updateAt;
+    public void setUpdatedAt(Date updatedAt) {
+        this.updatedAt = updatedAt;
     }
 
     @Override
     public String toString() {
-        return "Projeto{" + "id=" + id + ", name=" + name + ", description=" + description + ", createdAt=" + createdAt + ", updateAt=" + updateAt + '}';
+        return "Projeto{" + "id=" + id + ", name=" + name + ", description=" + description + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + '}';
     }
 }

@@ -81,6 +81,7 @@ public class TaskController {
             statement = conn.prepareStatement(sql);
             statement.setInt(1, taskId);
             statement.execute();
+            
         } catch (Exception ex) {
             throw new RuntimeException("Erro ao deletar a tarefa." + ex.getMessage(), ex);
         } finally {
