@@ -13,7 +13,7 @@ import java.sql.ResultSet;
 public class ProjectController {
     
     public void save(Project project) {
-        String sql = "INSERT INTO projects (name, description, createdAt, updateAt) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO projects (name, description, createdAt, updatedAt) VALUES (?, ?, ?, ?)";
         
         Connection conn = null;
         PreparedStatement statement = null;
@@ -21,6 +21,8 @@ public class ProjectController {
         try {
             conn = ConnectionFactory.getConnection();
             statement = conn.prepareStatement(sql);
+            
+            System.out.println("passou");
             
             statement.setString(1, project.getName());
             statement.setString(2, project.getDescription());
@@ -59,7 +61,7 @@ public class ProjectController {
         }
     }
     
-    public void removeById(Project idProject) {
+    public void removeById(int idProject) {
         String sql = "DELETE FROM projects WHERE id = ?";
         
         Connection conn = null;
@@ -69,7 +71,7 @@ public class ProjectController {
             conn = ConnectionFactory.getConnection();
             statement = conn.prepareStatement(sql);
             
-            statement.setInt(1, idProject.getId());
+            statement.setInt(1, idProject);
             statement.execute();
             
         } catch (Exception ex) {
