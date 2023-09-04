@@ -4,18 +4,24 @@
  */
 package view;
 
+import controller.ProjectController;
+import javax.swing.JOptionPane;
+import model.Project;
+import java.util.Date;
+
 /**
  *
  * @author Gabriel
  */
 public class ProjectDialogScreean extends javax.swing.JDialog {
 
-    /**
-     * Creates new form ProjectDialogScreean
-     */
+    ProjectController controller;
+
     public ProjectDialogScreean(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+
+        controller = new ProjectController();
     }
 
     /**
@@ -29,7 +35,7 @@ public class ProjectDialogScreean extends javax.swing.JDialog {
 
         jPanelTooBar = new javax.swing.JPanel();
         jLabelTooBarTitle = new javax.swing.JLabel();
-        jLabelTooBarSubtitle = new javax.swing.JLabel();
+        jLabelTooBarSave = new javax.swing.JLabel();
         jPanelBody = new javax.swing.JPanel();
         jLabelBodyName = new javax.swing.JLabel();
         jTextFieldName = new javax.swing.JTextField();
@@ -45,8 +51,14 @@ public class ProjectDialogScreean extends javax.swing.JDialog {
         jLabelTooBarTitle.setForeground(new java.awt.Color(255, 255, 255));
         jLabelTooBarTitle.setText("  Projeto");
 
-        jLabelTooBarSubtitle.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabelTooBarSubtitle.setIcon(new javax.swing.ImageIcon(getClass().getResource("/check.png"))); // NOI18N
+        jLabelTooBarSave.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabelTooBarSave.setIcon(new javax.swing.ImageIcon(getClass().getResource("/check.png"))); // NOI18N
+        jLabelTooBarSave.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jLabelTooBarSave.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabelTooBarSaveMouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanelTooBarLayout = new javax.swing.GroupLayout(jPanelTooBar);
         jPanelTooBar.setLayout(jPanelTooBarLayout);
@@ -56,14 +68,14 @@ public class ProjectDialogScreean extends javax.swing.JDialog {
                 .addContainerGap()
                 .addComponent(jLabelTooBarTitle, javax.swing.GroupLayout.DEFAULT_SIZE, 267, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabelTooBarSubtitle, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jLabelTooBarSave, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         jPanelTooBarLayout.setVerticalGroup(
             jPanelTooBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelTooBarLayout.createSequentialGroup()
                 .addGroup(jPanelTooBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabelTooBarSubtitle, javax.swing.GroupLayout.DEFAULT_SIZE, 54, Short.MAX_VALUE)
+                    .addComponent(jLabelTooBarSave, javax.swing.GroupLayout.DEFAULT_SIZE, 54, Short.MAX_VALUE)
                     .addGroup(jPanelTooBarLayout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jLabelTooBarTitle, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
@@ -146,6 +158,24 @@ public class ProjectDialogScreean extends javax.swing.JDialog {
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextFieldNameActionPerformed
 
+    private void jLabelTooBarSaveMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelTooBarSaveMouseClicked
+        // TODO add your handling code here:
+
+        try {
+            Project project = new Project();
+            project.setName(jTextFieldName.getText());
+            project.setDescription(jTextAreaDescription.getText());
+            project.setUpdatedAt(new Date());
+            controller.save(project);
+            JOptionPane.showMessageDialog(rootPane, "Projeto salvo com sucesso!");
+            
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(rootPane, ex.getMessage());
+        }
+
+        this.dispose();
+    }//GEN-LAST:event_jLabelTooBarSaveMouseClicked
+
     /**
      * @param args the command line arguments
      */
@@ -157,7 +187,7 @@ public class ProjectDialogScreean extends javax.swing.JDialog {
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
+                if ("Java swing".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
                 }
@@ -191,7 +221,7 @@ public class ProjectDialogScreean extends javax.swing.JDialog {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabelBodyDescription;
     private javax.swing.JLabel jLabelBodyName;
-    private javax.swing.JLabel jLabelTooBarSubtitle;
+    private javax.swing.JLabel jLabelTooBarSave;
     private javax.swing.JLabel jLabelTooBarTitle;
     private javax.swing.JPanel jPanelBody;
     private javax.swing.JPanel jPanelTooBar;

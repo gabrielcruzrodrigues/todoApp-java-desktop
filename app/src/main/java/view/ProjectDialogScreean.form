@@ -53,7 +53,7 @@
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="jLabelTooBarTitle" pref="267" max="32767" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="jLabelTooBarSubtitle" min="-2" pref="51" max="-2" attributes="0"/>
+                  <Component id="jLabelTooBarSave" min="-2" pref="51" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
           </Group>
@@ -62,7 +62,7 @@
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" attributes="0">
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="jLabelTooBarSubtitle" alignment="0" pref="54" max="32767" attributes="0"/>
+                      <Component id="jLabelTooBarSave" alignment="0" pref="54" max="32767" attributes="0"/>
                       <Group type="102" alignment="0" attributes="0">
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="jLabelTooBarTitle" max="32767" attributes="0"/>
@@ -85,13 +85,19 @@
             <Property name="text" type="java.lang.String" value="  Projeto"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JLabel" name="jLabelTooBarSubtitle">
+        <Component class="javax.swing.JLabel" name="jLabelTooBarSave">
           <Properties>
             <Property name="horizontalAlignment" type="int" value="0"/>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
               <Image iconType="3" name="/check.png"/>
             </Property>
+            <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
+              <Color id="Hand Cursor"/>
+            </Property>
           </Properties>
+          <Events>
+            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jLabelTooBarSaveMouseClicked"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>
