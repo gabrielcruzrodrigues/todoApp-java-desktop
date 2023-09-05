@@ -3,19 +3,28 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JDialog.java to edit this template
  */
 package view;
+import model.Task;
+import model.Project;
+import controller.TaskController;
+import javax.swing.JOptionPane;
+import java.util.Date;
+import java.text.SimpleDateFormat;
 
 /**
  *
  * @author Gabriel
  */
-public class TaskDialogScreean extends javax.swing.JDialog {
+public class TaskDialogScreen extends javax.swing.JDialog {
 
-    /**
-     * Creates new form TaskDialogScreean
-     */
-    public TaskDialogScreean(java.awt.Frame parent, boolean modal) {
+    TaskController taskController;
+    Project project;
+    
+    public TaskDialogScreen(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        
+        taskController = new TaskController();
+        
     }
 
     /**
@@ -37,10 +46,10 @@ public class TaskDialogScreean extends javax.swing.JDialog {
         jScrollPane1 = new javax.swing.JScrollPane();
         jTextAreaDescription = new javax.swing.JTextArea();
         jLabelPrazo = new javax.swing.JLabel();
-        jTextFieldPrazo = new javax.swing.JTextField();
         jLabelNotes = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTextAreaNotes = new javax.swing.JTextArea();
+        jFormattedDeadLine = new javax.swing.JFormattedTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -52,6 +61,12 @@ public class TaskDialogScreean extends javax.swing.JDialog {
 
         jLabelTooBarCheck.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabelTooBarCheck.setIcon(new javax.swing.ImageIcon(getClass().getResource("/check.png"))); // NOI18N
+        jLabelTooBarCheck.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jLabelTooBarCheck.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabelTooBarCheckMouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanelTooBarLayout = new javax.swing.GroupLayout(jPanelTooBar);
         jPanelTooBar.setLayout(jPanelTooBarLayout);
@@ -106,11 +121,6 @@ public class TaskDialogScreean extends javax.swing.JDialog {
         jLabelPrazo.setForeground(new java.awt.Color(0, 0, 0));
         jLabelPrazo.setText("Prazo ");
 
-        jTextFieldPrazo.setBackground(new java.awt.Color(255, 255, 255));
-        jTextFieldPrazo.setFont(new java.awt.Font("JetBrains Mono", 1, 12)); // NOI18N
-        jTextFieldPrazo.setForeground(new java.awt.Color(0, 0, 0));
-        jTextFieldPrazo.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-
         jLabelNotes.setFont(new java.awt.Font("JetBrains Mono", 1, 12)); // NOI18N
         jLabelNotes.setForeground(new java.awt.Color(0, 0, 0));
         jLabelNotes.setText("Notas");
@@ -123,6 +133,10 @@ public class TaskDialogScreean extends javax.swing.JDialog {
         jTextAreaNotes.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         jScrollPane2.setViewportView(jTextAreaNotes);
 
+        jFormattedDeadLine.setBackground(new java.awt.Color(255, 255, 255));
+        jFormattedDeadLine.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        jFormattedDeadLine.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(java.text.DateFormat.getDateInstance(java.text.DateFormat.SHORT))));
+
         javax.swing.GroupLayout jPanelBodyLayout = new javax.swing.GroupLayout(jPanelBody);
         jPanelBody.setLayout(jPanelBodyLayout);
         jPanelBodyLayout.setHorizontalGroup(
@@ -130,8 +144,8 @@ public class TaskDialogScreean extends javax.swing.JDialog {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelBodyLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanelBodyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jScrollPane2)
-                    .addComponent(jTextFieldPrazo)
+                    .addComponent(jFormattedDeadLine)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 468, Short.MAX_VALUE)
                     .addComponent(jScrollPane1)
                     .addComponent(jLabelDescription, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jTextFieldName)
@@ -157,7 +171,7 @@ public class TaskDialogScreean extends javax.swing.JDialog {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabelPrazo)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTextFieldPrazo, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jFormattedDeadLine, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabelNotes)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -187,6 +201,32 @@ public class TaskDialogScreean extends javax.swing.JDialog {
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextFieldNameActionPerformed
 
+    private void jLabelTooBarCheckMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelTooBarCheckMouseClicked
+        // TODO add your handling code here:
+        Task task = new Task();
+        
+        try {
+            task.setIdProject(1);
+            task.setName(jTextFieldName.getText());
+            task.setDescription(jTextAreaDescription.getText());
+            task.setNotes(jTextAreaNotes.getText());
+            task.setIsCompleted(false);
+            
+            //formatando a data vinda do campo jFormattedDeadLine para o formato exigido pela classe;
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd/mm/yyyy");
+            Date deadline = null;
+            deadline = dateFormat.parse(jFormattedDeadLine.getText());
+            task.setDeadLine(deadline);
+            
+            taskController.save(task);
+            JOptionPane.showMessageDialog(rootPane, "Tarefa criada com sucesso!");
+            
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(rootPane, ex.getMessage());
+        }
+        this.dispose();
+    }//GEN-LAST:event_jLabelTooBarCheckMouseClicked
+
     /**
      * @param args the command line arguments
      */
@@ -204,20 +244,21 @@ public class TaskDialogScreean extends javax.swing.JDialog {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(TaskDialogScreean.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(TaskDialogScreen.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(TaskDialogScreean.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(TaskDialogScreen.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(TaskDialogScreean.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(TaskDialogScreen.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(TaskDialogScreean.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(TaskDialogScreen.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                TaskDialogScreean dialog = new TaskDialogScreean(new javax.swing.JFrame(), true);
+                TaskDialogScreen dialog = new TaskDialogScreen(new javax.swing.JFrame(), true);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {
@@ -230,6 +271,7 @@ public class TaskDialogScreean extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JFormattedTextField jFormattedDeadLine;
     private javax.swing.JLabel jLabelDescription;
     private javax.swing.JLabel jLabelName;
     private javax.swing.JLabel jLabelNotes;
@@ -243,6 +285,11 @@ public class TaskDialogScreean extends javax.swing.JDialog {
     private javax.swing.JTextArea jTextAreaDescription;
     private javax.swing.JTextArea jTextAreaNotes;
     private javax.swing.JTextField jTextFieldName;
-    private javax.swing.JTextField jTextFieldPrazo;
     // End of variables declaration//GEN-END:variables
+
+    public void setProject(Project project) {
+        this.project = project;
+    }
+
+    
 }

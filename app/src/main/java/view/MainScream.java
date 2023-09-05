@@ -172,6 +172,12 @@ public class MainScream extends javax.swing.JFrame {
 
         tasksAdd.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         tasksAdd.setIcon(new javax.swing.ImageIcon(getClass().getResource("/add.png"))); // NOI18N
+        tasksAdd.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        tasksAdd.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tasksAddMouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout tasksPanelLayout = new javax.swing.GroupLayout(tasksPanel);
         tasksPanel.setLayout(tasksPanelLayout);
@@ -312,9 +318,16 @@ public class MainScream extends javax.swing.JFrame {
 
     private void projectsAddMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_projectsAddMouseClicked
         // TODO add your handling code here:
-        ProjectDialogScreean projectDialogScreean = new ProjectDialogScreean(this, rootPaneCheckingEnabled);
+        ProjectDialogScreen projectDialogScreean = new ProjectDialogScreen(this, rootPaneCheckingEnabled);
         projectDialogScreean.setVisible(true);
     }//GEN-LAST:event_projectsAddMouseClicked
+
+    private void tasksAddMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tasksAddMouseClicked
+        // TODO add your handling code here:
+        TaskDialogScreen taskDialogScreen = new TaskDialogScreen(this, rootPaneCheckingEnabled);
+//        taskDialogScreen.setProject(null);
+        taskDialogScreen.setVisible(true);
+    }//GEN-LAST:event_tasksAddMouseClicked
 
     /**
      * @param args the command line arguments
