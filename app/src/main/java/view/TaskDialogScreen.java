@@ -61,7 +61,7 @@ public class TaskDialogScreen extends javax.swing.JDialog {
 
         jLabelTooBarCheck.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabelTooBarCheck.setIcon(new javax.swing.ImageIcon(getClass().getResource("/check.png"))); // NOI18N
-        jLabelTooBarCheck.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jLabelTooBarCheck.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         jLabelTooBarCheck.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jLabelTooBarCheckMouseClicked(evt);
@@ -107,7 +107,7 @@ public class TaskDialogScreen extends javax.swing.JDialog {
 
         jLabelDescription.setFont(new java.awt.Font("JetBrains Mono", 1, 12)); // NOI18N
         jLabelDescription.setForeground(new java.awt.Color(0, 0, 0));
-        jLabelDescription.setText("Descrição");
+        jLabelDescription.setText("DescriÃ§Ã£o");
 
         jTextAreaDescription.setBackground(new java.awt.Color(255, 255, 255));
         jTextAreaDescription.setColumns(20);

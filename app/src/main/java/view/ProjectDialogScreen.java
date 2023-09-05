@@ -53,7 +53,7 @@ public class ProjectDialogScreen extends javax.swing.JDialog {
 
         jLabelTooBarSave.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabelTooBarSave.setIcon(new javax.swing.ImageIcon(getClass().getResource("/check.png"))); // NOI18N
-        jLabelTooBarSave.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jLabelTooBarSave.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         jLabelTooBarSave.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jLabelTooBarSaveMouseClicked(evt);
@@ -99,7 +99,7 @@ public class ProjectDialogScreen extends javax.swing.JDialog {
 
         jLabelBodyDescription.setFont(new java.awt.Font("JetBrains Mono", 1, 14)); // NOI18N
         jLabelBodyDescription.setForeground(new java.awt.Color(0, 0, 0));
-        jLabelBodyDescription.setText("Descrição");
+        jLabelBodyDescription.setText("Descricao");
 
         jTextAreaDescription.setBackground(new java.awt.Color(255, 255, 255));
         jTextAreaDescription.setColumns(20);

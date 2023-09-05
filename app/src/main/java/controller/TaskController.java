@@ -13,8 +13,8 @@ import java.util.ArrayList;
 public class TaskController {
     
     public void save(Task task) {
-        String sql = "INSERT INTO tasks (idProject, name, description"
-                + "completed, notes, deadLine, cratedAt, updatedAt)"
+        String sql = "INSERT INTO tasks (idProject, name, description,"
+                + "isCompleted, notes, deadLine, createdAt, updatedAt)"
                 + "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         
         Connection conn = null;
@@ -26,7 +26,7 @@ public class TaskController {
             
             statement.setInt(1, task.getIdProject());
             statement.setString(2, task.getName());
-            statement.setString(2, task.getDescription());
+            statement.setString(3, task.getDescription());
             statement.setBoolean(4, task.isIsCompleted());
             statement.setString(5, task.getNotes());
             statement.setDate(6, new Date(task.getDeadLine().getTime()));
@@ -35,6 +35,7 @@ public class TaskController {
             statement.execute();
             
         } catch(Exception ex) {
+            System.out.println(ex);
             throw new RuntimeException("Erro ao salvar task." + ex.getMessage(), ex);
         } finally {
             ConnectionFactory.closeConnection(conn, statement);

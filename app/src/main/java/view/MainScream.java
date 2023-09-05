@@ -62,7 +62,7 @@ public class MainScream extends javax.swing.JFrame {
 
         jLabelEmptyListSubtitle.setForeground(new java.awt.Color(153, 153, 153));
         jLabelEmptyListSubtitle.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabelEmptyListSubtitle.setText("Clique no botão \" + \" para adicionar uma nova tarefa.");
+        jLabelEmptyListSubtitle.setText("Clique no botÃ£o \" + \" para adicionar uma nova tarefa.");
 
         javax.swing.GroupLayout jPanelEmptyListLayout = new javax.swing.GroupLayout(jPanelEmptyList);
         jPanelEmptyList.setLayout(jPanelEmptyListLayout);
@@ -100,7 +100,7 @@ public class MainScream extends javax.swing.JFrame {
 
         tooBarSubtitle.setFont(new java.awt.Font("JetBrains Mono", 0, 14)); // NOI18N
         tooBarSubtitle.setForeground(new java.awt.Color(255, 255, 255));
-        tooBarSubtitle.setText("         Anote tudo, não esqueça de nada!");
+        tooBarSubtitle.setText("         Anote tudo, nÃ£o esqueÃ§a de nada!");
 
         javax.swing.GroupLayout tooBarLayout = new javax.swing.GroupLayout(tooBar);
         tooBar.setLayout(tooBarLayout);
@@ -247,7 +247,7 @@ public class MainScream extends javax.swing.JFrame {
                 {null, null, null, null}
             },
             new String [] {
-                "Nome", "Descrição", "Prazo", "Tarefa Concluída"
+                "Nome", "DescriÃ§Ã£o", "Prazo", "Tarefa ConcluÃ­da"
             }
         ) {
             Class[] types = new Class [] {
@@ -393,7 +393,7 @@ public class MainScream extends javax.swing.JFrame {
         jTableTasks.getTableHeader().setForeground(new Color(255,255,255));
         
         
-        //criando um short automático funcionalidade de ordenação de campo da table
+        //criando um short automï¿½tico funcionalidade de ordenaï¿½ï¿½o de campo da table
         jTableTasks.setAutoCreateRowSorter(true);
     }
 }
