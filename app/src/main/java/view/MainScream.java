@@ -10,6 +10,8 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import javax.swing.DefaultListModel;
 import javax.swing.JList;
+import model.Task;
+import util.TaskTableModel;
 
 /**
  *
@@ -21,7 +23,8 @@ public class MainScream extends javax.swing.JFrame {
     TaskController taskController;
 
     //modelo da jList visual padrao
-    DefaultListModel projectModel;
+    DefaultListModel projectsModel;
+    TaskTableModel taskModel;
 
     public MainScream() {
         initComponents();
@@ -143,7 +146,7 @@ public class MainScream extends javax.swing.JFrame {
 
         projectsAdd.setFont(new java.awt.Font("Segoe UI", 0, 10)); // NOI18N
         projectsAdd.setIcon(new javax.swing.ImageIcon(getClass().getResource("/add.png"))); // NOI18N
-        projectsAdd.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        projectsAdd.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         projectsAdd.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 projectsAddMouseClicked(evt);
@@ -181,7 +184,7 @@ public class MainScream extends javax.swing.JFrame {
 
         tasksAdd.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         tasksAdd.setIcon(new javax.swing.ImageIcon(getClass().getResource("/add.png"))); // NOI18N
-        tasksAdd.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        tasksAdd.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         tasksAdd.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tasksAddMouseClicked(evt);
@@ -415,22 +418,31 @@ public class MainScream extends javax.swing.JFrame {
     }
 
     public void initComponentsModel() {
-        projectModel = new DefaultListModel();
+        projectsModel = new DefaultListModel();
         loadProjects();
+        
+        taskModel = new TaskTableModel();
+        jTableTasks.setModel(taskModel);
+        loadTasks(1); 
+    }
+    
+    public void loadTasks(int idProject) {
+        List<Task> tasks = taskController.getAll(idProject);
+        taskModel.setTasks(tasks);
     }
 
     public void loadProjects() {
-        System.out.println("passou 2 - loadProjects");
+//        System.out.println("passou 2 - loadProjects");
         List<Project> projects = projectController.getAll();
         
         //limpar os projects que ja existiam e mostrar os novos atualizados
-        projectModel.clear();
+        projectsModel.clear();
 
         for (int i = 0; i < projects.size(); i++) {
-            projectModel.addElement(projects.get(i));
+            projectsModel.addElement(projects.get(i));
             System.out.println(projects.get(i).getName());
         }
         
-        jListProjects.setModel(projectModel);
+        jListProjects.setModel(projectsModel);
     }
 }
