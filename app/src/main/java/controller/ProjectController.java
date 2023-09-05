@@ -22,8 +22,6 @@ public class ProjectController {
             conn = ConnectionFactory.getConnection();
             statement = conn.prepareStatement(sql);
             
-            System.out.println("passou");
-            
             statement.setString(1, project.getName());
             statement.setString(2, project.getDescription());
             statement.setDate(3, new Date(project.getCreatedAt().getTime()));

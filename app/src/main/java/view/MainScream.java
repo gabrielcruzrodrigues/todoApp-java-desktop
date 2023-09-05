@@ -1,11 +1,15 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package view;
 
+import java.util.List;
 import java.awt.Color;
 import java.awt.Font;
+import controller.ProjectController;
+import model.Project;
+import controller.TaskController;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import javax.swing.DefaultListModel;
+import javax.swing.JList;
 
 /**
  *
@@ -13,12 +17,17 @@ import java.awt.Font;
  */
 public class MainScream extends javax.swing.JFrame {
 
-    /**
-     * Creates new form MainScream
-     */
+    ProjectController projectController;
+    TaskController taskController;
+
+    //modelo da jList visual padrao
+    DefaultListModel projectModel;
+
     public MainScream() {
         initComponents();
         decorateTableTask();
+        initDataController();
+        initComponentsModel();
     }
 
     /**
@@ -45,7 +54,7 @@ public class MainScream extends javax.swing.JFrame {
         tasksAdd = new javax.swing.JLabel();
         projectsList = new javax.swing.JPanel();
         jScrollListProjects = new javax.swing.JScrollPane();
-        projects = new javax.swing.JList<>();
+        jListProjects = new javax.swing.JList<>();
         jPanel5 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTableTasks = new javax.swing.JTable();
@@ -147,7 +156,7 @@ public class MainScream extends javax.swing.JFrame {
             projectsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(projectsPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(projectsTitle, javax.swing.GroupLayout.DEFAULT_SIZE, 136, Short.MAX_VALUE)
+                .addComponent(projectsTitle, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(projectsAdd)
                 .addGap(17, 17, 17))
@@ -203,19 +212,14 @@ public class MainScream extends javax.swing.JFrame {
         projectsList.setBackground(new java.awt.Color(255, 255, 255));
         projectsList.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
-        projects.setBackground(new java.awt.Color(255, 255, 255));
-        projects.setFont(new java.awt.Font("JetBrains Mono", 1, 18)); // NOI18N
-        projects.setForeground(new java.awt.Color(0, 0, 0));
-        projects.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
-        });
-        projects.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        projects.setFixedCellHeight(50);
-        projects.setSelectionBackground(new java.awt.Color(0, 153, 102));
-        projects.setSelectionForeground(new java.awt.Color(255, 255, 255));
-        jScrollListProjects.setViewportView(projects);
+        jListProjects.setBackground(new java.awt.Color(255, 255, 255));
+        jListProjects.setFont(new java.awt.Font("JetBrains Mono", 1, 18)); // NOI18N
+        jListProjects.setForeground(new java.awt.Color(0, 0, 0));
+        jListProjects.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        jListProjects.setFixedCellHeight(50);
+        jListProjects.setSelectionBackground(new java.awt.Color(0, 153, 102));
+        jListProjects.setSelectionForeground(new java.awt.Color(255, 255, 255));
+        jScrollListProjects.setViewportView(jListProjects);
 
         javax.swing.GroupLayout projectsListLayout = new javax.swing.GroupLayout(projectsList);
         projectsList.setLayout(projectsListLayout);
@@ -318,8 +322,17 @@ public class MainScream extends javax.swing.JFrame {
 
     private void projectsAddMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_projectsAddMouseClicked
         // TODO add your handling code here:
-        ProjectDialogScreen projectDialogScreean = new ProjectDialogScreen(this, rootPaneCheckingEnabled);
-        projectDialogScreean.setVisible(true);
+        ProjectDialogScreen projectDialogScreen = new ProjectDialogScreen(this, rootPaneCheckingEnabled);
+        projectDialogScreen.setVisible(true);
+        
+        //adicionando window Listener para quando o evento de fechar janela acontecer, chamar o metodo loadProjects
+        projectDialogScreen.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosed(WindowEvent e) {
+                loadProjects();
+            }
+        });
+        
     }//GEN-LAST:event_projectsAddMouseClicked
 
     private void tasksAddMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tasksAddMouseClicked
@@ -363,17 +376,17 @@ public class MainScream extends javax.swing.JFrame {
             }
         });
     }
-    
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabelEmptyListIcon;
     private javax.swing.JLabel jLabelEmptyListSubtitle;
     private javax.swing.JLabel jLabelEmptyListTitle;
+    private javax.swing.JList<String> jListProjects;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanelEmptyList;
     private javax.swing.JScrollPane jScrollListProjects;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTableTasks;
-    private javax.swing.JList<String> projects;
     private javax.swing.JLabel projectsAdd;
     private javax.swing.JPanel projectsList;
     private javax.swing.JPanel projectsPanel;
@@ -389,12 +402,35 @@ public class MainScream extends javax.swing.JFrame {
     //customizando o header da table de tarefas
     public void decorateTableTask() {
         jTableTasks.getTableHeader().setFont(new Font("JetBrains Mono", Font.BOLD, 14));
-        jTableTasks.getTableHeader().setBackground(new Color(0,153,102));
-        jTableTasks.getTableHeader().setForeground(new Color(255,255,255));
-        
-        
+        jTableTasks.getTableHeader().setBackground(new Color(0, 153, 102));
+        jTableTasks.getTableHeader().setForeground(new Color(255, 255, 255));
+
         //criando um short autom�tico funcionalidade de ordena��o de campo da table
         jTableTasks.setAutoCreateRowSorter(true);
     }
-}
 
+    public void initDataController() {
+        projectController = new ProjectController();
+        taskController = new TaskController();
+    }
+
+    public void initComponentsModel() {
+        projectModel = new DefaultListModel();
+        loadProjects();
+    }
+
+    public void loadProjects() {
+        System.out.println("passou 2 - loadProjects");
+        List<Project> projects = projectController.getAll();
+        
+        //limpar os projects que ja existiam e mostrar os novos atualizados
+        projectModel.clear();
+
+        for (int i = 0; i < projects.size(); i++) {
+            projectModel.addElement(projects.get(i));
+            System.out.println(projects.get(i).getName());
+        }
+        
+        jListProjects.setModel(projectModel);
+    }
+}
