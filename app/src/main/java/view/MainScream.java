@@ -12,6 +12,9 @@ import javax.swing.DefaultListModel;
 import javax.swing.JList;
 import model.Task;
 import util.TaskTableModel;
+import model.Task;
+import util.ButtonColumnCellRederer;
+import util.DeadlineColumnCellReader;
 
 /**
  *
@@ -28,9 +31,9 @@ public class MainScream extends javax.swing.JFrame {
 
     public MainScream() {
         initComponents();
-        decorateTableTask();
         initDataController();
         initComponentsModel();
+        decorateTableTask();
     }
 
     /**
@@ -103,7 +106,7 @@ public class MainScream extends javax.swing.JFrame {
         jScrollPane1.setViewportView(jTableTasks);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setMinimumSize(new java.awt.Dimension(700, 800));
+        setMinimumSize(new java.awt.Dimension(1200, 800));
 
         tooBar.setBackground(new java.awt.Color(0, 153, 102));
         tooBar.setForeground(new java.awt.Color(0, 102, 0));
@@ -125,7 +128,7 @@ public class MainScream extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(tooBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(tooBarTitle, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(tooBarSubtitle, javax.swing.GroupLayout.DEFAULT_SIZE, 860, Short.MAX_VALUE))
+                    .addComponent(tooBarSubtitle, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         tooBarLayout.setVerticalGroup(
@@ -245,12 +248,13 @@ public class MainScream extends javax.swing.JFrame {
             projectsListLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(projectsListLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollListProjects, javax.swing.GroupLayout.DEFAULT_SIZE, 523, Short.MAX_VALUE)
+                .addComponent(jScrollListProjects)
                 .addContainerGap())
         );
 
         jPanel5.setBackground(new java.awt.Color(255, 255, 255));
         jPanel5.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        jPanel5.setLayout(new java.awt.BorderLayout());
 
         jPanelEmptyList.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -280,31 +284,16 @@ public class MainScream extends javax.swing.JFrame {
         jPanelEmptyListLayout.setVerticalGroup(
             jPanelEmptyListLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelEmptyListLayout.createSequentialGroup()
-                .addGap(72, 72, 72)
+                .addGap(152, 152, 152)
                 .addComponent(jLabelEmptyListIcon)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabelEmptyListTitle)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabelEmptyListSubtitle)
-                .addContainerGap(81, Short.MAX_VALUE))
+                .addContainerGap(202, Short.MAX_VALUE))
         );
 
-        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
-        jPanel5.setLayout(jPanel5Layout);
-        jPanel5Layout.setHorizontalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel5Layout.createSequentialGroup()
-                .addGap(0, 142, Short.MAX_VALUE)
-                .addComponent(jPanelEmptyList, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 142, Short.MAX_VALUE))
-        );
-        jPanel5Layout.setVerticalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel5Layout.createSequentialGroup()
-                .addGap(0, 100, Short.MAX_VALUE)
-                .addComponent(jPanelEmptyList, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 101, Short.MAX_VALUE))
-        );
+        jPanel5.add(jPanelEmptyList, java.awt.BorderLayout.CENTER);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -319,7 +308,7 @@ public class MainScream extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(tasksPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, 575, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -358,13 +347,20 @@ public class MainScream extends javax.swing.JFrame {
     private void tasksAddMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tasksAddMouseClicked
         // TODO add your handling code here:
         TaskDialogScreen taskDialogScreen = new TaskDialogScreen(this, rootPaneCheckingEnabled);
-//        taskDialogScreen.setProject(null);
+        
+        //setando o id do projeto
+        int projectIndex = jListProjects.getSelectedIndex();
+        Project project = (Project) projectsModel.get(projectIndex);
+        taskDialogScreen.setProject(project);        
+        
         taskDialogScreen.setVisible(true);
         
         taskDialogScreen.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosed(WindowEvent e) {
-                loadTasks(1);
+                int projectIndex = jListProjects.getSelectedIndex();
+                Project project = (Project) projectsModel.get(projectIndex);
+                loadTasks(project.getId());
             }
         });
     }//GEN-LAST:event_tasksAddMouseClicked
@@ -373,11 +369,21 @@ public class MainScream extends javax.swing.JFrame {
         // Descobrir onde ocorreu o clique
         int rowIndex = jTableTasks.rowAtPoint(evt.getPoint());
         int columnIndex = jTableTasks.columnAtPoint(evt.getPoint());
+        Task task = taskModel.getTasks().get(rowIndex);
 
         switch(columnIndex) {
             case 3:
-                Task task = taskModel.getTasks().get(rowIndex);
                 taskController.update(task);
+                break;
+            case 4:
+                break;
+            case 5:
+                taskController.removeById(task.getId());
+                taskModel.getTasks().remove(task);
+                
+                int projectIndex = jListProjects.getSelectedIndex();
+                Project project = (Project) projectsModel.get(projectIndex);
+                loadTasks(project.getId());
                 break;
         }
     }//GEN-LAST:event_jTableTasksMouseClicked
@@ -386,7 +392,6 @@ public class MainScream extends javax.swing.JFrame {
         // Retorna o indice do item clicado
         int projectIndex = jListProjects.getSelectedIndex();
         Project project = (Project) projectsModel.get(projectIndex);
-        System.out.println(project.getId());
         loadTasks(project.getId());
     }//GEN-LAST:event_jListProjectsMouseClicked
 
@@ -455,6 +460,13 @@ public class MainScream extends javax.swing.JFrame {
 
         //criando um short autom�tico funcionalidade de ordena��o de campo da table
         jTableTasks.setAutoCreateRowSorter(true);
+        
+        jTableTasks.getColumnModel().getColumn(4).setCellRenderer(new ButtonColumnCellRederer("edit"));
+        jTableTasks.getColumnModel().getColumn(5).setCellRenderer(new ButtonColumnCellRederer("delete"));
+        
+        //selecionando a segunda coluna da table e adicionando o novo renderizador para fazer essas coisas 
+        jTableTasks.getColumnModel().getColumn(2).setCellRenderer(new DeadlineColumnCellReader());
+        
     }
 
     public void initDataController() {
@@ -462,13 +474,21 @@ public class MainScream extends javax.swing.JFrame {
         taskController = new TaskController();
     }
 
+    //metodo executado quando a tela e criada
     public void initComponentsModel() {
         projectsModel = new DefaultListModel();
         loadProjects();
         
         taskModel = new TaskTableModel();
         jTableTasks.setModel(taskModel);
-        loadTasks(1); 
+        
+        //forca o primeiro projeto da lista a ser selecionado
+        if (!projectsModel.isEmpty()) {
+            jListProjects.setSelectedIndex(0);
+            int projectIndex = jListProjects.getSelectedIndex();
+            Project project = (Project) projectsModel.get(projectIndex);
+            loadTasks(project.getId());
+        }
     }
     
     private void showjTableTasks(boolean hasTasks) {
