@@ -275,6 +275,7 @@ public class MainScream extends javax.swing.JFrame {
         jTableTasks.setGridColor(new java.awt.Color(255, 255, 255));
         jTableTasks.setRowHeight(50);
         jTableTasks.setSelectionBackground(new java.awt.Color(0, 204, 51));
+        jTableTasks.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jTableTasks.setShowHorizontalLines(true);
         jScrollPane1.setViewportView(jTableTasks);
 
@@ -343,6 +344,13 @@ public class MainScream extends javax.swing.JFrame {
         TaskDialogScreen taskDialogScreen = new TaskDialogScreen(this, rootPaneCheckingEnabled);
 //        taskDialogScreen.setProject(null);
         taskDialogScreen.setVisible(true);
+        
+        taskDialogScreen.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosed(WindowEvent e) {
+                loadTasks(1);
+            }
+        });
     }//GEN-LAST:event_tasksAddMouseClicked
 
     /**
@@ -440,7 +448,6 @@ public class MainScream extends javax.swing.JFrame {
 
         for (int i = 0; i < projects.size(); i++) {
             projectsModel.addElement(projects.get(i));
-            System.out.println(projects.get(i).getName());
         }
         
         jListProjects.setModel(projectsModel);
