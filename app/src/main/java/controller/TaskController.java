@@ -43,7 +43,7 @@ public class TaskController {
     }
     
     public void update(Task task) {
-        String sql = "UPDATE tasks SET idProjects = ?, name = ?, description = ?, isIsCompleted = ?"
+        String sql = "UPDATE tasks SET idProject = ?, name = ?, description = ?, isCompleted = ?,"
                 + "notes = ?, deadLine = ?, createdAt = ?, updatedAt = ? WHERE id = ?";
         
         Connection conn = null;
