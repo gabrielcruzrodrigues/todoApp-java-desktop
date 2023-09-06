@@ -3,6 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JDialog.java to edit this template
  */
 package view;
+
 import model.Task;
 import model.Project;
 import controller.TaskController;
@@ -18,13 +19,13 @@ public class TaskDialogScreen extends javax.swing.JDialog {
 
     TaskController taskController;
     Project project;
-    
+
     public TaskDialogScreen(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        
+
         taskController = new TaskController();
-        
+
     }
 
     /**
@@ -204,27 +205,33 @@ public class TaskDialogScreen extends javax.swing.JDialog {
     private void jLabelTooBarCheckMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelTooBarCheckMouseClicked
         // TODO add your handling code here:
         Task task = new Task();
-        
+
         try {
-            task.setIdProject(project.getId());
-            task.setName(jTextFieldName.getText());
-            task.setDescription(jTextAreaDescription.getText());
-            task.setNotes(jTextAreaNotes.getText());
-            task.setIsCompleted(false);
-            
-            //formatando a data vinda do campo jFormattedDeadLine para o formato exigido pela classe;
-            SimpleDateFormat dateFormat = new SimpleDateFormat("dd/mm/yyyy");
-            Date deadline = null;
-            deadline = dateFormat.parse(jFormattedDeadLine.getText());
-            task.setDeadLine(deadline);
-            
-            taskController.save(task);
-            JOptionPane.showMessageDialog(rootPane, "Tarefa criada com sucesso!");
-            
+            if (jTextFieldName.getText().isEmpty() || jFormattedDeadLine.getText().isEmpty()) {
+                JOptionPane.showMessageDialog(rootPane, "A terefa não foi salva pois existem campos"
+                        + " obrigatorios a serem preenchidos!");
+
+            } else {
+                task.setIdProject(project.getId());
+                task.setName(jTextFieldName.getText());
+                task.setDescription(jTextAreaDescription.getText());
+                task.setNotes(jTextAreaNotes.getText());
+                task.setIsCompleted(false);
+
+                //formatando a data vinda do campo jFormattedDeadLine para o formato exigido pela classe;
+                SimpleDateFormat dateFormat = new SimpleDateFormat("dd/mm/yyyy");
+                Date deadline = null;
+                deadline = dateFormat.parse(jFormattedDeadLine.getText());
+                task.setDeadLine(deadline);
+
+                taskController.save(task);
+                JOptionPane.showMessageDialog(rootPane, "Tarefa salva com sucesso!");
+                this.dispose();
+            }
+
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(rootPane, ex.getMessage());
         }
-        this.dispose();
     }//GEN-LAST:event_jLabelTooBarCheckMouseClicked
 
     /**
@@ -291,5 +298,4 @@ public class TaskDialogScreen extends javax.swing.JDialog {
         this.project = project;
     }
 
-    
 }
